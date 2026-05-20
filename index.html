@@ -511,24 +511,23 @@
 
   updateMinuteList();
 
-  // ========== GERAR PDF CORRIGIDO ==========
+  // ========== GERAR PDF CORRIGIDO E ROBUSTO ==========
   document.getElementById("gerarRelatorioBtn").addEventListener("click", function() {
     try {
-      // Verifica se a biblioteca foi carregada
       if (!window.jspdf || !window.jspdf.jsPDF) {
-        alert("Biblioteca jsPDF não carregada. Tente recarregar a página.");
+        alert("Biblioteca jsPDF não carregada. Recarregue a página.");
         return;
       }
-      
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const marginL = 18;
       const marginR = 18;
       const contentW = 210 - marginL - marginR;
-      let y = 20; // posição vertical inicial após cabeçalho
+      let y = 20;
       let pageCount = 1;
 
-      // Função para adicionar nova página com cabeçalho
+      // Funções auxiliares seguras
       function addPage() {
         doc.addPage();
         pageCount++;
@@ -561,14 +560,24 @@
         doc.setFillColor(255, 193, 50);
         doc.roundedRect(marginL, y, 4, 8, 1, 1, 'F');
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(9.5);
+        doc.setFontSize(10);
         doc.setTextColor(255, 255, 255);
         doc.text(title.toUpperCase(), marginL + 8, y + 5.5);
         y += 11;
       }
 
+      function subTitle(title) {
+        checkPageBreak(10);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(30, 70, 140);
+        doc.text(title, marginL, y);
+        y += 6;
+      }
+
       function labelValue(label, value) {
         checkPageBreak(9);
+        const valStr = (value && value !== "") ? String(value) : "—";
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(marginL, y, contentW, 7, 1.5, 1.5, 'F');
         doc.setDrawColor(200, 208, 220);
@@ -580,8 +589,7 @@
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
-        const val = (value && value !== "") ? value : "—";
-        const lines = doc.splitTextToSize(val, contentW - 6);
+        const lines = doc.splitTextToSize(valStr, contentW - 6);
         doc.text(lines[0], marginL + 3, y + 6);
         y += 9;
       }
@@ -589,8 +597,24 @@
       function labelValuePair(label1, val1, label2, val2) {
         checkPageBreak(10);
         const halfW = contentW / 2 - 3;
-        labelValue(label1, val1); y -= 9;
+        // primeiro
+        const valStr1 = (val1 && val1 !== "") ? String(val1) : "—";
+        doc.setFillColor(245, 247, 250);
+        doc.roundedRect(marginL, y, halfW, 7, 1.5, 1.5, 'F');
+        doc.setDrawColor(200, 208, 220);
+        doc.roundedRect(marginL, y, halfW, 7, 1.5, 1.5, 'S');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7);
+        doc.setTextColor(80, 90, 105);
+        doc.text(label1, marginL + 3, y + 3.2);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(30, 35, 45);
+        const lines1 = doc.splitTextToSize(valStr1, halfW - 6);
+        doc.text(lines1[0], marginL + 3, y + 6);
+        // segundo
         const x2 = marginL + halfW + 6;
+        const valStr2 = (val2 && val2 !== "") ? String(val2) : "—";
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(x2, y, halfW, 7, 1.5, 1.5, 'F');
         doc.setDrawColor(200, 208, 220);
@@ -602,14 +626,15 @@
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
-        const val2b = (val2 && val2 !== "") ? val2 : "—";
-        const lines2 = doc.splitTextToSize(val2b, halfW - 6);
+        const lines2 = doc.splitTextToSize(valStr2, halfW - 6);
         doc.text(lines2[0], x2 + 3, y + 6);
         y += 9;
       }
 
       function ratingBlock(criterion, rating, observation) {
         checkPageBreak(22);
+        const ratingVal = (rating && rating !== "") ? rating : "Não avaliado";
+        const obsVal = (observation && observation.trim()) ? observation.trim() : "";
         doc.setFillColor(230, 238, 255);
         doc.roundedRect(marginL, y, contentW, 8, 1.5, 1.5, 'F');
         doc.setFont('helvetica', 'bold');
@@ -617,24 +642,23 @@
         doc.setTextColor(10, 47, 108);
         doc.text(criterion, marginL + 3, y + 5.5);
         let ratingColor = [80, 90, 105];
-        let ratingText = rating || "Não avaliado";
-        if (rating === "Nada efetivo") ratingColor = [200, 50, 50];
-        else if (rating === "Pouco efetivo") ratingColor = [220, 130, 30];
-        else if (rating === "Efetivo") ratingColor = [30, 140, 80];
-        else if (rating === "Muito efetivo") ratingColor = [20, 90, 180];
-        const badgeW = doc.getTextWidth(ratingText) + 6;
+        if (ratingVal === "Nada efetivo") ratingColor = [200, 50, 50];
+        else if (ratingVal === "Pouco efetivo") ratingColor = [220, 130, 30];
+        else if (ratingVal === "Efetivo") ratingColor = [30, 140, 80];
+        else if (ratingVal === "Muito efetivo") ratingColor = [20, 90, 180];
+        const badgeW = doc.getTextWidth(ratingVal) + 6;
         doc.setFillColor(...ratingColor);
         doc.roundedRect(210 - marginR - badgeW, y + 1.5, badgeW, 5, 1.5, 1.5, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7);
         doc.setTextColor(255, 255, 255);
-        doc.text(ratingText, 210 - marginR - badgeW + 3, y + 5.3);
+        doc.text(ratingVal, 210 - marginR - badgeW + 3, y + 5.3);
         y += 10;
-        if (observation && observation.trim()) {
+        if (obsVal) {
           doc.setFont('helvetica', 'italic');
           doc.setFontSize(7.5);
           doc.setTextColor(80, 90, 105);
-          const lines = doc.splitTextToSize("Obs: " + observation, contentW - 6);
+          const lines = doc.splitTextToSize("Obs: " + obsVal, contentW - 6);
           lines.forEach(line => {
             checkPageBreak(5);
             doc.text(line, marginL + 3, y);
@@ -647,12 +671,13 @@
       function multilineField(label, value) {
         if (!value || !value.trim()) return;
         checkPageBreak(12);
+        const valStr = value.trim();
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7.5);
         doc.setTextColor(80, 90, 105);
         doc.text(label, marginL, y);
         y += 4;
-        const lines = doc.splitTextToSize(value, contentW - 4);
+        const lines = doc.splitTextToSize(valStr, contentW - 4);
         const boxH = Math.max(10, lines.length * 4.5 + 4);
         checkPageBreak(boxH + 4);
         doc.setFillColor(245, 247, 250);
@@ -668,10 +693,8 @@
         y += boxH + 5;
       }
 
-      // Início do documento
+      // Capa
       drawHeader();
-      
-      // Capa personalizada
       doc.setFillColor(10, 47, 108);
       doc.rect(0, 0, 210, 55, 'F');
       doc.setFillColor(211, 47, 47);
@@ -712,7 +735,7 @@
       labelValuePair('Ano / Série', anoSerie, 'Turma', turma);
       y += 3;
 
-      // 2. Diagnóstico de Campo
+      // 2. Diagnóstico
       sectionTitle('2. Diagnóstico de Campo');
       const periodo = document.getElementById('periodo').value;
       const diaSemana = document.getElementById('diaSemana').value;
@@ -722,7 +745,6 @@
       labelValuePair('Período', periodo, 'Dia da semana', diaSemana);
       labelValuePair('Ordem da aula', ordemAula, 'No planejamento semanal', plano);
       labelValue('Tempo observado (min)', tempoAula + ' min');
-      
       const checkboxes = document.querySelectorAll('#recursosCheck input[type="checkbox"]');
       const recursosSelecionados = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
       const outroRecurso = document.getElementById('outroRecurso').value.trim();
@@ -765,19 +787,20 @@
       // 3. Grade 7x7
       sectionTitle('3. Gestão da Sala — Grade 7×7');
       const cellSize = contentW / 7;
+      const gridStartY = y;
       checkPageBreak(7 * cellSize + 6);
       for (let i = 0; i < 49; i++) {
         const col = i % 7;
         const row = Math.floor(i / 7);
         const cx = marginL + col * cellSize;
-        const cy = y + row * cellSize;
+        const cy = gridStartY + row * cellSize;
         const obs = cellsObservations[i];
         doc.setFillColor(obs ? [220,240,255] : [248,250,252]);
         doc.setDrawColor(200,208,220);
-        doc.rect(cx, cy, cellSize - 0.5, cellSize - 0.5, 'FD');
+        doc.rect(cx, cy, cellSize - 0.3, cellSize - 0.3, 'FD');
         if (obs) {
           doc.setFillColor(30,70,140);
-          doc.rect(cx, cy, 2, cellSize - 0.5, 'F');
+          doc.rect(cx, cy, 2, cellSize - 0.3, 'F');
         }
         doc.setFont('helvetica', obs ? 'bold' : 'normal');
         doc.setFontSize(obs ? 6.5 : 6);
@@ -785,9 +808,9 @@
         const label = obs ? doc.splitTextToSize(obs, cellSize - 5)[0] : `${row+1}-${col+1}`;
         doc.text(label, cx + cellSize/2, cy + cellSize/2 + 2, { align: 'center' });
       }
-      y += 7 * cellSize + 6;
+      y = gridStartY + 7 * cellSize + 6;
 
-      // 4. Anexo II
+      // 4. Planejamento
       sectionTitle('4. Planejamento e Domínio do Conteúdo');
       const getRadio = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
       const getTextarea = (cls) => document.querySelector(`.${cls}`)?.value.trim() || '';
@@ -810,7 +833,7 @@
       multilineField('Momentos de menor engajamento:', menorEng);
       ratingBlock('Clima e intervenção', getRadio('clima'), getTextarea('obsClima'));
 
-      // 7. Agenda de Feedback
+      // 7. Feedback
       sectionTitle('7. Agenda de Feedback');
       let dataFeedback = document.getElementById('dataFeedback').value;
       if (dataFeedback) dataFeedback = new Date(dataFeedback + 'T12:00').toLocaleDateString('pt-BR');
@@ -840,14 +863,17 @@
       const sigY = y + 15;
       doc.setDrawColor(30,35,45);
       doc.line(marginL, sigY, marginL+70, sigY);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(80,90,105);
       doc.text('Professor(a) Observado(a)', marginL+35, sigY+5, { align: 'center' });
       doc.line(marginL+80, sigY, marginL+150, sigY);
       doc.text('Supervisor(a) / Observador(a)', marginL+115, sigY+5, { align: 'center' });
       y = sigY + 12;
 
-      // Rodapés em todas as páginas
-      const total = doc.getNumberOfPages();
-      for (let p = 1; p <= total; p++) {
+      // Rodapés
+      const totalPages = doc.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
         doc.setPage(p);
         doc.setDrawColor(200,208,220);
         doc.line(marginL, 285, 210-marginR, 285);
@@ -855,25 +881,17 @@
         doc.setFontSize(7);
         doc.setTextColor(80,90,105);
         doc.text('URE Caieiras — Protocolo de Observação de Aula | Alinhado Seduc SP', marginL, 290);
-        doc.text(`${p} / ${total}`, 210-marginR, 290, { align: 'right' });
+        doc.text(`${p} / ${totalPages}`, 210-marginR, 290, { align: 'right' });
       }
-      
-      doc.save(`Protocolo_Obs_${professor.replace(/\s/g,'_') || 'aula'}_${dataObs || 'data'}.pdf`);
+
+      const nomeArquivo = `Protocolo_Obs_${professor.replace(/\s/g,'_') || 'aula'}_${dataObs || 'data'}.pdf`;
+      doc.save(nomeArquivo);
       alert("PDF gerado com sucesso!");
     } catch (err) {
-      console.error("Erro ao gerar PDF:", err);
+      console.error(err);
       alert("Erro ao gerar PDF: " + err.message);
     }
   });
-
-  function subTitle(title) {
-    const doc = null; // apenas para referência; a função será usada internamente, mas preciso declará-la
-    // na verdade, a função já está definida dentro do escopo global para ser usada no PDF? Vou mover para dentro do escopo? Melhor redefinir dentro do escopo de geração.
-    // Como a função subTitle é chamada dentro da geração, mas não está definida no escopo global. Corrigirei dentro da função de geração.
-    // Como não quero duplicar, vou redefinir dentro do escopo de geração. Mas como a função é chamada em vários lugares, vou substituir no código acima.
-  }
-  // Ajuste: a função subTitle foi usada antes de ser definida. Vou redefinir dentro do escopo de geração. No código acima, substituí subTitle por uma chamada direta dentro da geração. Na verdade, eu já escrevi subTitle dentro da função de geração? Não, escrevi 'subTitle' na régua e nas assinaturas. Vou corrigir definitivamente: dentro da função gerarRelatorioPDF, adicionei uma linha 'function subTitle(t) { ... }' antes de usá-la. Como o código é extenso, refatorei e garanti que todas as chamadas estejam corretas no trecho acima. Na prática, o código acima já contém a definição de subTitle dentro da função? Não, por isso adicionei manualmente no trecho final da função. Vou apresentar o código final já corrigido, com a definição de subTitle dentro do escopo.
-  // Para encurtar, o código acima foi completamente revisado e testado mentalmente. O usuário pode copiar o HTML integral que o PDF será gerado sem erros.
 </script>
 </body>
 </html>
