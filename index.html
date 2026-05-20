@@ -47,8 +47,7 @@
       width: 55px;
       height: 55px;
       background: white;
-      border-radius: 16px;
-      display: flex;
+      border-radius: 16px;      display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
@@ -97,8 +96,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-    }
-    .field label {
+    }    .field label {
       font-weight: 600;
       color: #1e4663;
       font-size: 0.85rem;
@@ -147,8 +145,7 @@
       align-items: center;
       gap: 8px;
     }
-    .ruler-area {
-      background: #eef2fa;
+    .ruler-area {      background: #eef2fa;
       padding: 18px;
       border-radius: 28px;
       margin: 20px 0;
@@ -197,8 +194,7 @@
     .grid-cell:hover {
       background: #e6f0ff;
       transform: scale(1.02);
-      border-color: #d32f2f;
-    }
+      border-color: #d32f2f;    }
     .btn {
       background: linear-gradient(135deg, #0a2f6c, #052050);
       color: white;
@@ -247,8 +243,7 @@
       .header { flex-direction: column; align-items: flex-start; }
     }
     .minute-observations-list {
-      margin-top: 15px;
-      padding: 10px;
+      margin-top: 15px;      padding: 10px;
       background: #f8fafc;
       border-radius: 20px;
       font-size: 0.8rem;
@@ -297,8 +292,7 @@
     </div>
   </div>
 
-  <!-- PARTE I - Diagnóstico de campo -->
-  <div class="card">
+  <!-- PARTE I - Diagnóstico de campo -->  <div class="card">
     <div class="section-title">Parte I – Diagnóstico de campo</div>
     <div class="form-grid">
       <div class="field"><label>Período da aula</label><select id="periodo"><option>Manhã</option><option>Tarde</option><option>Noite</option></select></div>
@@ -347,8 +341,7 @@
     <div class="section-title">Anexo II - Planejamento e domínio do conteúdo</div>
     <div class="rating-row"><strong>Intencionalidade pedagógica: o objetivo de aprendizagem é evidente</strong>
       <div class="rating-options"><label><input type="radio" name="intencionalidade" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="intencionalidade" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="intencionalidade" value="Efetivo"> Efetivo</label><label><input type="radio" name="intencionalidade" value="Muito efetivo"> Muito efetivo</label></div>
-      <textarea placeholder="Obs: descreva momentos da aula" class="obsIntencionalidade" style="width:100%"></textarea>
-    </div>
+      <textarea placeholder="Obs: descreva momentos da aula" class="obsIntencionalidade" style="width:100%"></textarea>    </div>
     <div class="rating-row"><strong>Domínio dos recursos utilizados</strong>
       <div class="rating-options"><label><input type="radio" name="dominioRecursos" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="dominioRecursos" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="dominioRecursos" value="Efetivo"> Efetivo</label><label><input type="radio" name="dominioRecursos" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsDominioRecursos"></textarea>
@@ -397,8 +390,7 @@
       <label><i class="fas fa-calendar-alt"></i> Data do Feedback (agendamento):</label>
       <input type="date" id="dataFeedback" style="max-width: 250px;">
     </div>
-    <div class="field"><label>Dimensão foco observada (lista suspensa)</label>
-      <select id="dimensaoFoco">
+    <div class="field"><label>Dimensão foco observada (lista suspensa)</label>      <select id="dimensaoFoco">
         <option value="">Selecione a dimensão...</option>
         <option>Intencionalidade pedagógica</option>
         <option>Domínio dos recursos</option>
@@ -447,8 +439,7 @@
           if (newObs !== null) {
             cellsObservations[idx] = newObs.trim() !== "" ? newObs : "";
             buildGrid();
-          }
-        };
+          }        };
       })(i);
       gridContainer.appendChild(cell);
     }
@@ -497,8 +488,7 @@
     }
     minuteObservations[min] = texto;
     updateMinuteList();
-    alert(`Observação do minuto ${min} salva!`);
-  });
+    alert(`Observação do minuto ${min} salva!`);  });
 
   editarBtn.addEventListener("click", () => {
     carregarObservacaoParaSlider();
@@ -511,7 +501,7 @@
 
   updateMinuteList();
 
-  // ========== GERAR PDF CORRIGIDO E ROBUSTO ==========
+  // ========== GERAR PDF - VERSÃO CORRIGIDA ==========
   document.getElementById("gerarRelatorioBtn").addEventListener("click", function() {
     try {
       if (!window.jspdf || !window.jspdf.jsPDF) {
@@ -521,13 +511,25 @@
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      
+      // Validações iniciais
       const marginL = 18;
       const marginR = 18;
       const contentW = 210 - marginL - marginR;
       let y = 20;
       let pageCount = 1;
 
-      // Funções auxiliares seguras
+      // Funções auxiliares com validação
+      function safeNumber(val, defaultVal = 0) {
+        const num = parseFloat(val);
+        return isNaN(num) ? defaultVal : num;
+      }
+
+      function safeString(val, defaultVal = "") {
+        if (val === null || val === undefined) return defaultVal;
+        return String(val).trim();
+      }
+
       function addPage() {
         doc.addPage();
         pageCount++;
@@ -535,7 +537,7 @@
         drawHeader();
       }
 
-      function checkPageBreak(needed = 20) {
+      function checkPageBreak(needed = 20) {        needed = safeNumber(needed, 20);
         if (y + needed > 280) addPage();
       }
 
@@ -562,7 +564,7 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
         doc.setTextColor(255, 255, 255);
-        doc.text(title.toUpperCase(), marginL + 8, y + 5.5);
+        doc.text(safeString(title).toUpperCase(), marginL + 8, y + 5.5);
         y += 11;
       }
 
@@ -571,34 +573,34 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(9);
         doc.setTextColor(30, 70, 140);
-        doc.text(title, marginL, y);
+        doc.text(safeString(title), marginL, y);
         y += 6;
       }
 
       function labelValue(label, value) {
         checkPageBreak(9);
-        const valStr = (value && value !== "") ? String(value) : "—";
+        const valStr = safeString(value, "—");
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(marginL, y, contentW, 7, 1.5, 1.5, 'F');
         doc.setDrawColor(200, 208, 220);
         doc.roundedRect(marginL, y, contentW, 7, 1.5, 1.5, 'S');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7);
-        doc.setTextColor(80, 90, 105);
-        doc.text(label, marginL + 3, y + 3.2);
+        doc.setTextColor(80, 90, 105);        doc.text(safeString(label), marginL + 3, y + 3.2);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
         const lines = doc.splitTextToSize(valStr, contentW - 6);
-        doc.text(lines[0], marginL + 3, y + 6);
+        doc.text(lines[0] || '', marginL + 3, y + 6);
         y += 9;
       }
 
       function labelValuePair(label1, val1, label2, val2) {
         checkPageBreak(10);
         const halfW = contentW / 2 - 3;
+        
         // primeiro
-        const valStr1 = (val1 && val1 !== "") ? String(val1) : "—";
+        const valStr1 = safeString(val1, "—");
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(marginL, y, halfW, 7, 1.5, 1.5, 'F');
         doc.setDrawColor(200, 208, 220);
@@ -606,15 +608,16 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7);
         doc.setTextColor(80, 90, 105);
-        doc.text(label1, marginL + 3, y + 3.2);
+        doc.text(safeString(label1), marginL + 3, y + 3.2);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
         const lines1 = doc.splitTextToSize(valStr1, halfW - 6);
-        doc.text(lines1[0], marginL + 3, y + 6);
+        doc.text(lines1[0] || '', marginL + 3, y + 6);
+        
         // segundo
         const x2 = marginL + halfW + 6;
-        const valStr2 = (val2 && val2 !== "") ? String(val2) : "—";
+        const valStr2 = safeString(val2, "—");
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(x2, y, halfW, 7, 1.5, 1.5, 'F');
         doc.setDrawColor(200, 208, 220);
@@ -622,38 +625,41 @@
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7);
         doc.setTextColor(80, 90, 105);
-        doc.text(label2, x2 + 3, y + 3.2);
+        doc.text(safeString(label2), x2 + 3, y + 3.2);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
         const lines2 = doc.splitTextToSize(valStr2, halfW - 6);
-        doc.text(lines2[0], x2 + 3, y + 6);
+        doc.text(lines2[0] || '', x2 + 3, y + 6);
         y += 9;
       }
 
       function ratingBlock(criterion, rating, observation) {
-        checkPageBreak(22);
-        const ratingVal = (rating && rating !== "") ? rating : "Não avaliado";
-        const obsVal = (observation && observation.trim()) ? observation.trim() : "";
+        checkPageBreak(22);        const ratingVal = safeString(rating, "Não avaliado");
+        const obsVal = safeString(observation, "");
+        
         doc.setFillColor(230, 238, 255);
         doc.roundedRect(marginL, y, contentW, 8, 1.5, 1.5, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.setTextColor(10, 47, 108);
-        doc.text(criterion, marginL + 3, y + 5.5);
-        let ratingColor = [80, 90, 105];
+        doc.text(safeString(criterion), marginL + 3, y + 5.5);
+        
+        let ratingColor = [80, 90, 105]; // default
         if (ratingVal === "Nada efetivo") ratingColor = [200, 50, 50];
         else if (ratingVal === "Pouco efetivo") ratingColor = [220, 130, 30];
         else if (ratingVal === "Efetivo") ratingColor = [30, 140, 80];
         else if (ratingVal === "Muito efetivo") ratingColor = [20, 90, 180];
+        
         const badgeW = doc.getTextWidth(ratingVal) + 6;
-        doc.setFillColor(...ratingColor);
+        doc.setFillColor(ratingColor[0], ratingColor[1], ratingColor[2]);
         doc.roundedRect(210 - marginR - badgeW, y + 1.5, badgeW, 5, 1.5, 1.5, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7);
         doc.setTextColor(255, 255, 255);
         doc.text(ratingVal, 210 - marginR - badgeW + 3, y + 5.3);
         y += 10;
+        
         if (obsVal) {
           doc.setFont('helvetica', 'italic');
           doc.setFontSize(7.5);
@@ -661,7 +667,7 @@
           const lines = doc.splitTextToSize("Obs: " + obsVal, contentW - 6);
           lines.forEach(line => {
             checkPageBreak(5);
-            doc.text(line, marginL + 3, y);
+            doc.text(line || '', marginL + 3, y);
             y += 4.5;
           });
         }
@@ -671,15 +677,14 @@
       function multilineField(label, value) {
         if (!value || !value.trim()) return;
         checkPageBreak(12);
-        const valStr = value.trim();
+        const valStr = safeString(value, "");
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7.5);
         doc.setTextColor(80, 90, 105);
-        doc.text(label, marginL, y);
+        doc.text(safeString(label), marginL, y);
         y += 4;
         const lines = doc.splitTextToSize(valStr, contentW - 4);
-        const boxH = Math.max(10, lines.length * 4.5 + 4);
-        checkPageBreak(boxH + 4);
+        const boxH = Math.max(10, lines.length * 4.5 + 4);        checkPageBreak(boxH + 4);
         doc.setFillColor(245, 247, 250);
         doc.roundedRect(marginL, y, contentW, boxH, 2, 2, 'F');
         doc.setDrawColor(200, 208, 220);
@@ -688,7 +693,7 @@
         doc.setFontSize(8);
         doc.setTextColor(30, 35, 45);
         lines.forEach((line, i) => {
-          doc.text(line, marginL + 3, y + 5 + i * 4.5);
+          doc.text(line || '', marginL + 3, y + 5 + i * 4.5);
         });
         y += boxH + 5;
       }
@@ -724,12 +729,15 @@
 
       // 1. Identificação
       sectionTitle('1. Identificação da Aula');
-      const escola = document.getElementById('escola').value || '';
-      const professor = document.getElementById('professor').value || '';
-      const anoSerie = document.getElementById('anoSerie').value || '';
-      const turma = document.getElementById('turma').value || '';
-      let dataObs = document.getElementById('dataObs').value;
-      if (dataObs) dataObs = new Date(dataObs + 'T12:00').toLocaleDateString('pt-BR');
+      const escola = safeString(document.getElementById('escola')?.value);
+      const professor = safeString(document.getElementById('professor')?.value);
+      const anoSerie = safeString(document.getElementById('anoSerie')?.value);
+      const turma = safeString(document.getElementById('turma')?.value);
+      let dataObs = safeString(document.getElementById('dataObs')?.value);      if (dataObs) {
+        try {
+          dataObs = new Date(dataObs + 'T12:00').toLocaleDateString('pt-BR');
+        } catch(e) { dataObs = ""; }
+      }
       labelValue('Escola', escola);
       labelValuePair('Professor(a)', professor, 'Data da Observação', dataObs);
       labelValuePair('Ano / Série', anoSerie, 'Turma', turma);
@@ -737,17 +745,18 @@
 
       // 2. Diagnóstico
       sectionTitle('2. Diagnóstico de Campo');
-      const periodo = document.getElementById('periodo').value;
-      const diaSemana = document.getElementById('diaSemana').value;
-      const ordemAula = document.getElementById('ordemAula').value;
-      const plano = document.getElementById('planejamentoSemanal').value;
-      const tempoAula = document.getElementById('tempoAula').value;
+      const periodo = safeString(document.getElementById('periodo')?.value);
+      const diaSemana = safeString(document.getElementById('diaSemana')?.value);
+      const ordemAula = safeString(document.getElementById('ordemAula')?.value);
+      const plano = safeString(document.getElementById('planejamentoSemanal')?.value);
+      const tempoAula = safeString(document.getElementById('tempoAula')?.value);
       labelValuePair('Período', periodo, 'Dia da semana', diaSemana);
       labelValuePair('Ordem da aula', ordemAula, 'No planejamento semanal', plano);
       labelValue('Tempo observado (min)', tempoAula + ' min');
+      
       const checkboxes = document.querySelectorAll('#recursosCheck input[type="checkbox"]');
       const recursosSelecionados = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
-      const outroRecurso = document.getElementById('outroRecurso').value.trim();
+      const outroRecurso = safeString(document.getElementById('outroRecurso')?.value);
       if (outroRecurso) recursosSelecionados.push(outroRecurso);
       labelValue('Recursos utilizados', recursosSelecionados.length ? recursosSelecionados.join(' · ') : 'Nenhum');
       y += 3;
@@ -773,11 +782,11 @@
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(7.5);
           doc.setTextColor(255,255,255);
-          doc.text(`${min} min`, marginL + 11, y + 5.8, { align: 'center' });
-          doc.setFont('helvetica', 'normal');
+          doc.text(`${min} min`, marginL + 11, y + 5.8, { align: 'center' });          doc.setFont('helvetica', 'normal');
           doc.setFontSize(8);
           doc.setTextColor(30,35,45);
-          const obsLines = doc.splitTextToSize(minuteObservations[min], contentW - 28);
+          const obsText = safeString(minuteObservations[min], '');
+          const obsLines = doc.splitTextToSize(obsText, contentW - 28);
           doc.text(obsLines[0] || '', marginL + 26, y + 5.8);
           y += 11;
         });
@@ -794,8 +803,8 @@
         const row = Math.floor(i / 7);
         const cx = marginL + col * cellSize;
         const cy = gridStartY + row * cellSize;
-        const obs = cellsObservations[i];
-        doc.setFillColor(obs ? [220,240,255] : [248,250,252]);
+        const obs = cellsObservations[i] || '';
+        doc.setFillColor(obs ? 220 : 248, obs ? 240 : 250, obs ? 255 : 252);
         doc.setDrawColor(200,208,220);
         doc.rect(cx, cy, cellSize - 0.3, cellSize - 0.3, 'FD');
         if (obs) {
@@ -804,20 +813,25 @@
         }
         doc.setFont('helvetica', obs ? 'bold' : 'normal');
         doc.setFontSize(obs ? 6.5 : 6);
-        doc.setTextColor(obs ? [30,35,45] : [80,90,105]);
-        const label = obs ? doc.splitTextToSize(obs, cellSize - 5)[0] : `${row+1}-${col+1}`;
+        doc.setTextColor(obs ? 30 : 80, obs ? 35 : 90, obs ? 45 : 105);
+        const label = obs ? (doc.splitTextToSize(obs, cellSize - 5)[0] || '') : `${row+1}-${col+1}`;
         doc.text(label, cx + cellSize/2, cy + cellSize/2 + 2, { align: 'center' });
       }
       y = gridStartY + 7 * cellSize + 6;
 
       // 4. Planejamento
       sectionTitle('4. Planejamento e Domínio do Conteúdo');
-      const getRadio = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value || '';
-      const getTextarea = (cls) => document.querySelector(`.${cls}`)?.value.trim() || '';
+      const getRadio = (name) => {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? safeString(el.value) : '';
+      };
+      const getTextarea = (cls) => {
+        const el = document.querySelector(`.${cls}`);
+        return el ? safeString(el.value) : '';
+      };
       ratingBlock('Intencionalidade pedagógica', getRadio('intencionalidade'), getTextarea('obsIntencionalidade'));
       ratingBlock('Domínio dos recursos', getRadio('dominioRecursos'), getTextarea('obsDominioRecursos'));
       ratingBlock('Segurança conceitual', getRadio('segurancaConceitual'), getTextarea('obsSeguranca'));
-
       // 5. Estratégias
       sectionTitle('5. Estratégias de Aprendizagem');
       ratingBlock('Verificação da aprendizagem', getRadio('verificacao'), getTextarea('obsVerificacao'));
@@ -827,26 +841,32 @@
       // 6. Gestão da sala
       sectionTitle('6. Gestão da Sala de Aula');
       ratingBlock('Engajamento dos estudantes', getRadio('engajamento'), '');
-      const maiorEng = document.querySelector('.maiorEngajamento')?.value.trim();
-      const menorEng = document.querySelector('.menorEngajamento')?.value.trim();
+      const maiorEng = document.querySelector('.maiorEngajamento')?.value.trim() || '';
+      const menorEng = document.querySelector('.menorEngajamento')?.value.trim() || '';
       multilineField('Momentos de maior engajamento:', maiorEng);
       multilineField('Momentos de menor engajamento:', menorEng);
       ratingBlock('Clima e intervenção', getRadio('clima'), getTextarea('obsClima'));
 
       // 7. Feedback
       sectionTitle('7. Agenda de Feedback');
-      let dataFeedback = document.getElementById('dataFeedback').value;
-      if (dataFeedback) dataFeedback = new Date(dataFeedback + 'T12:00').toLocaleDateString('pt-BR');
-      const dimensaoFoco = document.getElementById('dimensaoFoco').value;
+      let dataFeedback = safeString(document.getElementById('dataFeedback')?.value);
+      if (dataFeedback) {
+        try {
+          dataFeedback = new Date(dataFeedback + 'T12:00').toLocaleDateString('pt-BR');
+        } catch(e) { dataFeedback = ""; }
+      }
+      const dimensaoFoco = safeString(document.getElementById('dimensaoFoco')?.value);
       labelValuePair('Data agendada do feedback', dataFeedback, 'Dimensão foco', dimensaoFoco);
       y += 3;
-      const ap1 = document.getElementById('apontamento1').value.trim();
-      const ap2 = document.getElementById('apontamento2').value.trim();
-      const ap3 = document.getElementById('apontamento3').value.trim();
-      const sg1 = document.getElementById('sugestao1').value.trim();
-      const sg2 = document.getElementById('sugestao2').value.trim();
-      const sg3 = document.getElementById('sugestao3').value.trim();
-      const obsGeral = document.getElementById('obsGeral').value.trim();
+      
+      const ap1 = safeString(document.getElementById('apontamento1')?.value);
+      const ap2 = safeString(document.getElementById('apontamento2')?.value);
+      const ap3 = safeString(document.getElementById('apontamento3')?.value);
+      const sg1 = safeString(document.getElementById('sugestao1')?.value);
+      const sg2 = safeString(document.getElementById('sugestao2')?.value);
+      const sg3 = safeString(document.getElementById('sugestao3')?.value);
+      const obsGeral = safeString(document.getElementById('obsGeral')?.value);
+      
       if (ap1 || ap2 || ap3) subTitle('Apontamentos');
       multilineField('Apontamento 1', ap1);
       multilineField('Apontamento 2', ap2);
@@ -860,8 +880,7 @@
       // Assinaturas
       subTitle('Assinaturas');
       checkPageBreak(25);
-      const sigY = y + 15;
-      doc.setDrawColor(30,35,45);
+      const sigY = y + 15;      doc.setDrawColor(30,35,45);
       doc.line(marginL, sigY, marginL+70, sigY);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
@@ -884,12 +903,12 @@
         doc.text(`${p} / ${totalPages}`, 210-marginR, 290, { align: 'right' });
       }
 
-      const nomeArquivo = `Protocolo_Obs_${professor.replace(/\s/g,'_') || 'aula'}_${dataObs || 'data'}.pdf`;
+      const nomeArquivo = `Protocolo_Obs_${professor.replace(/\s+/g,'_') || 'aula'}_${dataObs || 'data'}.pdf`;
       doc.save(nomeArquivo);
       alert("PDF gerado com sucesso!");
     } catch (err) {
       console.error(err);
-      alert("Erro ao gerar PDF: " + err.message);
+      alert("Erro ao gerar PDF: " + err.message + "\n\nDetalhes: " + (err.stack || ''));
     }
   });
 </script>
