@@ -7,12 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(145deg, #0a2f6c 0%, #041a3a 100%);
@@ -20,7 +15,6 @@
       padding: 20px;
       color: #1e293b;
     }
-
     .main-container {
       max-width: 1400px;
       margin: 0 auto;
@@ -30,8 +24,6 @@
       box-shadow: 0 30px 35px rgba(0,0,0,0.5), inset 0 1px 4px rgba(255,255,200,0.1);
       border: 1px solid #d32f2f;
     }
-
-    /* Header responsivo */
     .header {
       display: flex;
       justify-content: space-between;
@@ -44,14 +36,12 @@
       flex-wrap: wrap;
       gap: 15px;
     }
-
     .logo-area {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
-
     .logo-placeholder {
       width: 55px;
       height: 55px;
@@ -63,17 +53,14 @@
       font-weight: 800;
       color: #0a2f6c;
       font-size: 14px;
-      padding: 5px;
       text-align: center;
       line-height: 1.2;
     }
-
     .logo-area span {
       font-size: 1.1rem;
       font-weight: 600;
       color: #ffec9e;
     }
-
     .title-badge {
       background: #d32f2f;
       color: white;
@@ -83,8 +70,6 @@
       letter-spacing: 1px;
       font-size: 0.85rem;
     }
-
-    /* Cards */
     .card {
       background: white;
       border-radius: 32px;
@@ -93,7 +78,6 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       border: 1px solid #e0e4e9;
     }
-
     .section-title {
       font-size: 1.4rem;
       font-weight: 700;
@@ -102,34 +86,22 @@
       padding-left: 15px;
       margin: 0 0 20px 0;
     }
-
-    .subtitle {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin: 25px 0 12px 0;
-      color: #0a2f6c;
-    }
-
-    /* Grids responsivos */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1rem;
       margin-bottom: 1rem;
     }
-
     .field {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
-
     .field label {
       font-weight: 600;
       color: #1e4663;
       font-size: 0.85rem;
     }
-
     input, select, textarea {
       padding: 10px 14px;
       border-radius: 40px;
@@ -139,62 +111,62 @@
       transition: 0.2s;
       background: white;
     }
-
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #d32f2f;
       box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
     }
-
     .checkbox-group {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       margin-top: 5px;
     }
-
     .checkbox-item {
       display: flex;
       align-items: center;
       gap: 6px;
       font-size: 0.85rem;
     }
-
     .rating-row {
       background: #fef9e6;
       border-radius: 24px;
       padding: 16px 20px;
       margin-bottom: 20px;
     }
-
     .rating-options {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
       margin: 12px 0;
     }
-
     .rating-options label {
       font-weight: normal;
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
-
-    /* Régua */
     .ruler-area {
       background: #eef2fa;
       padding: 18px;
       border-radius: 28px;
       margin: 20px 0;
     }
-
     .minute-slider {
       width: 100%;
       margin: 15px 0;
     }
-
-    /* Grade 7x7 responsiva */
+    .minute-control {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .btn-small {
+      padding: 6px 16px;
+      font-size: 0.8rem;
+    }
     .grid-7x7 {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -204,7 +176,6 @@
       padding: 15px;
       border-radius: 24px;
     }
-
     .grid-cell {
       aspect-ratio: 1 / 1;
       background: white;
@@ -222,14 +193,11 @@
       padding: 4px;
       word-break: break-word;
     }
-
     .grid-cell:hover {
       background: #e6f0ff;
       transform: scale(1.02);
       border-color: #d32f2f;
     }
-
-    /* Botões */
     .btn {
       background: linear-gradient(135deg, #0a2f6c, #052050);
       color: white;
@@ -244,71 +212,39 @@
       gap: 8px;
       font-family: 'Inter', sans-serif;
     }
-
     .btn:hover {
       background: #d32f2f;
       transform: translateY(-2px);
     }
-
     .btn-pdf {
       background: #2c5f8a;
       margin-top: 20px;
     }
-
-    /* Agenda de feedback - campos separados */
     .feedback-group {
       display: flex;
       flex-direction: column;
       gap: 15px;
       margin-top: 15px;
     }
-
     .feedback-item {
       border: 1px solid #e2e8f0;
       border-radius: 24px;
       padding: 12px;
       background: #f9fafc;
     }
-
     .feedback-item label {
       font-weight: 700;
       color: #0a2f6c;
       display: block;
       margin-bottom: 6px;
     }
-
-    .calendar-input {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Responsividade extra */
     @media (max-width: 700px) {
-      .main-container {
-        padding: 12px;
-      }
-      .grid-7x7 {
-        gap: 5px;
-        padding: 8px;
-      }
-      .grid-cell {
-        font-size: 8px;
-      }
-      .rating-options {
-        gap: 10px;
-      }
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .title-badge {
-        align-self: flex-start;
-      }
+      .main-container { padding: 12px; }
+      .grid-7x7 { gap: 5px; padding: 8px; }
+      .grid-cell { font-size: 8px; }
+      .rating-options { gap: 10px; }
+      .header { flex-direction: column; align-items: flex-start; }
     }
-
-    /* Impressão */
     @media print {
       body {
         background: white;
@@ -317,11 +253,11 @@
       }
       .main-container {
         background: white;
-        padding: 10px;
+        padding: 15px;
         box-shadow: none;
         border: none;
       }
-      .header .title-badge, .btn, footer, .btn-pdf {
+      .header .title-badge, .btn, .btn-small, .btn-pdf, .ruler-area .btn, footer, .grid-7x7, .minute-control {
         display: none !important;
       }
       .card {
@@ -329,14 +265,14 @@
         border: 1px solid #ccc;
         break-inside: avoid;
       }
-      .grid-cell {
-        border: 1px solid #aaa;
-      }
       .rating-row {
         break-inside: avoid;
       }
+      /* Mostrar os textos das observações da régua na impressão */
+      .minute-observations-list {
+        display: block !important;
+      }
     }
-
     footer {
       text-align: center;
       margin-top: 2rem;
@@ -345,15 +281,26 @@
       font-size: 0.8rem;
       border-top: 1px solid #2c4c6e;
     }
+    .minute-observations-list {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f8fafc;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: none; /* só aparece na impressão? Vamos mostrar também na tela como resumo */
+      display: block;
+    }
+    .minute-observations-list h4 {
+      margin-bottom: 8px;
+      color: #0a2f6c;
+    }
   </style>
 </head>
 <body>
 <div class="main-container">
   <div class="header">
     <div class="logo-area">
-      <div class="logo-placeholder">
-        <i class="fas fa-school"></i><br>URE
-      </div>
+      <div class="logo-placeholder"><i class="fas fa-school"></i><br>URE</div>
       <span>URE CAIEIRAS - Seduc SP</span>
     </div>
     <div class="title-badge"><i class="fas fa-clipboard-list"></i> Protocolo de Observação de Aula</div>
@@ -408,16 +355,24 @@
       <div class="field"><label>Tempo de aula observada (minutos)</label><input type="number" id="tempoAula" value="50" step="5"></div>
     </div>
 
-    <!-- Régua de minutos -->
+    <!-- Régua de minutos com botão salvar/editar -->
     <div class="ruler-area">
       <label><strong><i class="fas fa-stopwatch"></i> Régua de minutos – selecione o minuto e registre observações</strong></label>
       <input type="range" id="minutoSlider" class="minute-slider" min="0" max="120" value="0" step="1">
       <div>Minuto selecionado: <span id="minutoSelecionado">0</span> min</div>
-      <textarea id="observacaoMinuto" rows="2" placeholder="Descreva o que aconteceu neste minuto da aula..."></textarea>
+      <textarea id="observacaoMinuto" rows="2" placeholder="Digite a observação para este minuto..."></textarea>
+      <div class="minute-control">
+        <button id="salvarObservacao" class="btn btn-small"><i class="fas fa-save"></i> Salvar observação deste minuto</button>
+        <button id="editarObservacao" class="btn btn-small" style="background:#64748b;"><i class="fas fa-edit"></i> Editar (carregar)</button>
+      </div>
+      <div id="minuteObservationsList" class="minute-observations-list">
+        <h4><i class="fas fa-list"></i> Observações salvas por minuto:</h4>
+        <div id="minuteListContent">Nenhuma observação salva ainda.</div>
+      </div>
     </div>
   </div>
 
-  <!-- ANEXO II - PROTOCOLO DE OBSERVAÇÃO (Parte 1 e 2) -->
+  <!-- ANEXO II - PROTOCOLO -->
   <div class="card">
     <div class="section-title">Anexo II - Planejamento e domínio do conteúdo</div>
     <!-- Intencionalidade -->
@@ -425,12 +380,10 @@
       <div class="rating-options"><label><input type="radio" name="intencionalidade" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="intencionalidade" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="intencionalidade" value="Efetivo"> Efetivo</label><label><input type="radio" name="intencionalidade" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Obs: descreva momentos da aula" class="obsIntencionalidade" style="width:100%"></textarea>
     </div>
-    <!-- Domínio recursos -->
     <div class="rating-row"><strong>Domínio dos recursos utilizados</strong>
       <div class="rating-options"><label><input type="radio" name="dominioRecursos" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="dominioRecursos" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="dominioRecursos" value="Efetivo"> Efetivo</label><label><input type="radio" name="dominioRecursos" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsDominioRecursos"></textarea>
     </div>
-    <!-- Segurança conceitual -->
     <div class="rating-row"><strong>Segurança conceitual: domínio do conteúdo ao explicar e responder dúvidas</strong>
       <div class="rating-options"><label><input type="radio" name="segurancaConceitual" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="segurancaConceitual" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="segurancaConceitual" value="Efetivo"> Efetivo</label><label><input type="radio" name="segurancaConceitual" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsSeguranca"></textarea>
@@ -439,17 +392,14 @@
 
   <div class="card">
     <div class="section-title">Parte 2 – Estratégias de aprendizagem</div>
-    <!-- Verificação -->
     <div class="rating-row"><strong>Verificação da aprendizagem: checa se os estudantes estão atendendo</strong>
       <div class="rating-options"><label><input type="radio" name="verificacao" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="verificacao" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="verificacao" value="Efetivo"> Efetivo</label><label><input type="radio" name="verificacao" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsVerificacao"></textarea>
     </div>
-    <!-- Adaptação -->
     <div class="rating-row"><strong>Adaptação da aula: identifica dificuldades/avanços e adapta ritmo</strong>
       <div class="rating-options"><label><input type="radio" name="adaptacao" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="adaptacao" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="adaptacao" value="Efetivo"> Efetivo</label><label><input type="radio" name="adaptacao" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsAdaptacao"></textarea>
     </div>
-    <!-- Gestão de tempo -->
     <div class="rating-row"><strong>Gestão de tempo: tempos adequados para atividades e sistematização</strong>
       <div class="rating-options"><label><input type="radio" name="gestaoTempo" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="gestaoTempo" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="gestaoTempo" value="Efetivo"> Efetivo</label><label><input type="radio" name="gestaoTempo" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsGestaoTempo"></textarea>
@@ -460,79 +410,61 @@
   <div class="card">
     <div class="section-title">Parte 3 – Gestão da sala de aula (grade 7x7)</div>
     <div id="grid7x7" class="grid-7x7"></div>
-
-    <!-- Engajamento -->
     <div class="rating-row"><strong>Engajamento dos estudantes: mantém a maior parte envolvida</strong>
       <div class="rating-options"><label><input type="radio" name="engajamento" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="engajamento" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="engajamento" value="Efetivo"> Efetivo</label><label><input type="radio" name="engajamento" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva os momentos de maior engajamento" class="maiorEngajamento" style="margin-bottom:8px"></textarea>
       <textarea placeholder="Descreva os momentos de menor engajamento" class="menorEngajamento"></textarea>
     </div>
-    <!-- Clima -->
     <div class="rating-row"><strong>Clima: intervém de forma respeitosa diante de dispersão/conflitos</strong>
       <div class="rating-options"><label><input type="radio" name="clima" value="Nada efetivo"> Nada efetivo</label><label><input type="radio" name="clima" value="Pouco efetivo"> Pouco efetivo</label><label><input type="radio" name="clima" value="Efetivo"> Efetivo</label><label><input type="radio" name="clima" value="Muito efetivo"> Muito efetivo</label></div>
       <textarea placeholder="Descreva momentos da aula" class="obsClima"></textarea>
     </div>
   </div>
 
-  <!-- AGENDA DE FEEDBACK com calendário e campos separados 1,2,3 -->
+  <!-- AGENDA DE FEEDBACK -->
   <div class="card">
     <div class="section-title">Agenda de Feedback</div>
-    
-    <!-- Calendário (data do feedback) -->
     <div class="field" style="margin-bottom: 20px;">
       <label><i class="fas fa-calendar-alt"></i> Data do Feedback (agendamento):</label>
       <input type="date" id="dataFeedback" style="max-width: 250px;">
     </div>
-
-    <div class="field"><label>Dimensão foco observada</label><input type="text" id="dimensaoFoco" placeholder="ex: Intencionalidade, Engajamento..."></div>
-
-    <!-- Apontamentos separados 1, 2, 3 -->
-    <div class="feedback-group">
-      <div class="feedback-item">
-        <label>Apontamento 1</label>
-        <textarea id="apontamento1" rows="2" placeholder="Registre o primeiro apontamento..."></textarea>
-      </div>
-      <div class="feedback-item">
-        <label>Apontamento 2</label>
-        <textarea id="apontamento2" rows="2" placeholder="Registre o segundo apontamento..."></textarea>
-      </div>
-      <div class="feedback-item">
-        <label>Apontamento 3</label>
-        <textarea id="apontamento3" rows="2" placeholder="Registre o terceiro apontamento..."></textarea>
-      </div>
+    <div class="field"><label>Dimensão foco observada (lista suspensa)</label>
+      <select id="dimensaoFoco">
+        <option value="">Selecione a dimensão...</option>
+        <option>Intencionalidade pedagógica</option>
+        <option>Domínio dos recursos</option>
+        <option>Segurança conceitual</option>
+        <option>Verificação da aprendizagem</option>
+        <option>Adaptação da aula</option>
+        <option>Gestão de tempo</option>
+        <option>Engajamento dos estudantes</option>
+        <option>Clima e intervenção</option>
+        <option>Outros</option>
+      </select>
     </div>
-
-    <!-- Sugestões de ações separadas 1, 2, 3 -->
     <div class="feedback-group">
-      <div class="feedback-item">
-        <label>Sugestão de ação 1</label>
-        <textarea id="sugestao1" rows="2" placeholder="Sugestão 1..."></textarea>
-      </div>
-      <div class="feedback-item">
-        <label>Sugestão de ação 2</label>
-        <textarea id="sugestao2" rows="2" placeholder="Sugestão 2..."></textarea>
-      </div>
-      <div class="feedback-item">
-        <label>Sugestão de ação 3</label>
-        <textarea id="sugestao3" rows="2" placeholder="Sugestão 3..."></textarea>
-      </div>
+      <div class="feedback-item"><label>Apontamento 1</label><textarea id="apontamento1" rows="2"></textarea></div>
+      <div class="feedback-item"><label>Apontamento 2</label><textarea id="apontamento2" rows="2"></textarea></div>
+      <div class="feedback-item"><label>Apontamento 3</label><textarea id="apontamento3" rows="2"></textarea></div>
     </div>
-
-    <div class="field"><label>Observação geral</label><textarea id="obsGeral" rows="3" placeholder="Comentários adicionais sobre a aula..."></textarea></div>
-    
+    <div class="feedback-group">
+      <div class="feedback-item"><label>Sugestão de ação 1</label><textarea id="sugestao1" rows="2"></textarea></div>
+      <div class="feedback-item"><label>Sugestão de ação 2</label><textarea id="sugestao2" rows="2"></textarea></div>
+      <div class="feedback-item"><label>Sugestão de ação 3</label><textarea id="sugestao3" rows="2"></textarea></div>
+    </div>
+    <div class="field"><label>Observação geral</label><textarea id="obsGeral" rows="3"></textarea></div>
     <div style="text-align: center;">
-      <button class="btn btn-pdf" onclick="window.print();"><i class="fas fa-file-pdf"></i> Gerar Relatório PDF (via impressão)</button>
+      <button id="gerarRelatorioBtn" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Gerar Relatório PDF (via impressão)</button>
     </div>
   </div>
 
-  <footer><i class="fas fa-clipboard-list"></i> URE CAIEIRAS - Protocolo de Observação de Aula | Alinhado ao plano de excelência Seduc SP</footer>
+  <footer><i class="fas fa-clipboard-list"></i> URE CAIEIRAS - Protocolo de Observação de Aula | Alinhado Seduc SP</footer>
 </div>
 
 <script>
-  // ========== GRADE 7x7 CLICÁVEL ==========
+  // ========== GRADE 7x7 ==========
   const gridContainer = document.getElementById("grid7x7");
   let cellsObservations = Array(49).fill("");
-
   function buildGrid() {
     gridContainer.innerHTML = "";
     for (let i = 0; i < 49; i++) {
@@ -554,14 +486,71 @@
   }
   buildGrid();
 
-  // ========== RÉGUA DE MINUTOS ==========
+  // ========== RÉGUA DE MINUTOS COM ARMAZENAMENTO ==========
+  let minuteObservations = {}; // chave: minuto, valor: texto
   const slider = document.getElementById("minutoSlider");
   const minutoSpan = document.getElementById("minutoSelecionado");
-  slider.addEventListener("input", function() {
-    minutoSpan.innerText = slider.value;
+  const obsTextarea = document.getElementById("observacaoMinuto");
+  const salvarBtn = document.getElementById("salvarObservacao");
+  const editarBtn = document.getElementById("editarObservacao");
+  const minuteListDiv = document.getElementById("minuteListContent");
+
+  function updateMinuteList() {
+    const minutes = Object.keys(minuteObservations).sort((a,b)=>a-b);
+    if(minutes.length === 0) {
+      minuteListDiv.innerHTML = "Nenhuma observação salva ainda.";
+      return;
+    }
+    let html = "<ul style='margin-left:20px;'>";
+    for(let m of minutes) {
+      const preview = minuteObservations[m].substring(0, 50);
+      html += `<li><strong>Minuto ${m}:</strong> ${preview}${minuteObservations[m].length>50?'...':''}</li>`;
+    }
+    html += "</ul>";
+    minuteListDiv.innerHTML = html;
+  }
+
+  function carregarObservacaoParaSlider() {
+    const min = slider.value;
+    if(minuteObservations[min]) {
+      obsTextarea.value = minuteObservations[min];
+    } else {
+      obsTextarea.value = "";
+    }
+  }
+
+  salvarBtn.addEventListener("click", () => {
+    const min = slider.value;
+    const texto = obsTextarea.value.trim();
+    if(texto === "") {
+      alert("Digite uma observação antes de salvar.");
+      return;
+    }
+    minuteObservations[min] = texto;
+    updateMinuteList();
+    alert(`Observação do minuto ${min} salva!`);
   });
 
-  // Ajuste para impressão (grade menor)
+  editarBtn.addEventListener("click", () => {
+    carregarObservacaoParaSlider();
+  });
+
+  slider.addEventListener("input", () => {
+    minutoSpan.innerText = slider.value;
+    carregarObservacaoParaSlider();
+  });
+
+  // Inicializar lista vazia
+  updateMinuteList();
+
+  // ========== GERAR RELATÓRIO PDF (via impressão) ==========
+  document.getElementById("gerarRelatorioBtn").addEventListener("click", () => {
+    // Antes de imprimir, podemos inserir no DOM um resumo das observações da régua para garantir que apareçam
+    // Mas já temos a lista visível. A impressão incluirá tudo.
+    window.print();
+  });
+
+  // Ajustes de impressão: já tratado por CSS
   window.onbeforeprint = function() {
     document.querySelectorAll('.grid-cell').forEach(cell => cell.style.fontSize = "9px");
   };
