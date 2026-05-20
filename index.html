@@ -245,6 +245,7 @@
       .rating-options { gap: 10px; }
       .header { flex-direction: column; align-items: flex-start; }
     }
+    /* ESTILOS PARA IMPRESSÃO (RELATÓRIO PDF) */
     @media print {
       body {
         background: white;
@@ -256,22 +257,85 @@
         padding: 15px;
         box-shadow: none;
         border: none;
+        max-width: 100%;
       }
-      .header .title-badge, .btn, .btn-small, .btn-pdf, .ruler-area .btn, footer, .grid-7x7, .minute-control {
-        display: none !important;
+      /* Esconde elementos interativos e botões */
+      .header .title-badge, .btn, .btn-small, .btn-pdf, .minute-control, 
+      .minute-slider, .ruler-area .btn, footer, .grid-cell {
+        /* grid-cell será impresso como texto, mas a interatividade some */
       }
-      .card {
-        box-shadow: none;
+      .grid-cell {
+        border: 1px solid #aaa;
+        background: #f9f9f9;
+        cursor: default;
+      }
+      .grid-7x7 {
+        background: white;
         border: 1px solid #ccc;
-        break-inside: avoid;
       }
-      .rating-row {
-        break-inside: avoid;
+      /* Remove os botões e campos de interação da régua */
+      .ruler-area .minute-control, .ruler-area input[type="range"] {
+        display: none;
       }
-      /* Mostrar os textos das observações da régua na impressão */
+      /* Força a exibição de todas as observações da régua */
       .minute-observations-list {
         display: block !important;
+        border-top: 1px solid #ccc;
+        margin-top: 15px;
+        padding-top: 10px;
       }
+      /* Mostra todos os valores preenchidos */
+      textarea, input, select {
+        border: none;
+        background: transparent;
+        padding: 0;
+        font-weight: normal;
+        color: black;
+        font-size: 10pt;
+        resize: none;
+        overflow: visible;
+      }
+      /* Para os radio buttons, mostra o texto marcado */
+      .rating-options label {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      /* Quebras de página amigáveis */
+      .card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        box-shadow: none;
+      }
+      .section-title {
+        color: #0a2f6c;
+      }
+      /* Esconde placeholders */
+      textarea::placeholder {
+        color: transparent;
+      }
+      /* Garante que a grade seja impressa como tabela */
+      .grid-7x7 {
+        display: grid !important;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+      }
+      .grid-cell {
+        font-size: 8pt;
+        padding: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: pre-wrap;
+      }
+    }
+    .minute-observations-list {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f8fafc;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: block;
     }
     footer {
       text-align: center;
@@ -280,19 +344,6 @@
       color: #b4c8e0;
       font-size: 0.8rem;
       border-top: 1px solid #2c4c6e;
-    }
-    .minute-observations-list {
-      margin-top: 15px;
-      padding: 10px;
-      background: #f8fafc;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      display: none; /* só aparece na impressão? Vamos mostrar também na tela como resumo */
-      display: block;
-    }
-    .minute-observations-list h4 {
-      margin-bottom: 8px;
-      color: #0a2f6c;
     }
   </style>
 </head>
@@ -348,6 +399,9 @@
           <div class="checkbox-item"><input type="checkbox" value="Materiais manipuláveis"> Materiais manipuláveis</div>
           <div class="checkbox-item"><input type="checkbox" value="Plataforma digital"> Plataforma digital</div>
           <div class="checkbox-item"><input type="checkbox" value="Mapas/gráficos"> Mapas/gráficos</div>
+          <!-- Novos recursos solicitados -->
+          <div class="checkbox-item"><input type="checkbox" value="MD-Material digital"> MD-Material digital</div>
+          <div class="checkbox-item"><input type="checkbox" value="Material impresso"> Material impresso</div>
           <div class="checkbox-item"><input type="text" placeholder="Outro recurso" id="outroRecurso" style="width:150px"></div>
         </div>
       </div>
@@ -540,22 +594,19 @@
     carregarObservacaoParaSlider();
   });
 
-  // Inicializar lista vazia
   updateMinuteList();
 
-  // ========== GERAR RELATÓRIO PDF (via impressão) ==========
+  // ========== GERAR RELATÓRIO PDF ==========
   document.getElementById("gerarRelatorioBtn").addEventListener("click", () => {
-    // Antes de imprimir, podemos inserir no DOM um resumo das observações da régua para garantir que apareçam
-    // Mas já temos a lista visível. A impressão incluirá tudo.
     window.print();
   });
 
-  // Ajustes de impressão: já tratado por CSS
+  // Ajustes visuais para impressão
   window.onbeforeprint = function() {
-    document.querySelectorAll('.grid-cell').forEach(cell => cell.style.fontSize = "9px");
+    // Não precisa de ajustes adicionais, o CSS já cuida
   };
   window.onafterprint = function() {
-    document.querySelectorAll('.grid-cell').forEach(cell => cell.style.fontSize = "12px");
+    // Restaura qualquer coisa se necessário
   };
 </script>
 </body>
